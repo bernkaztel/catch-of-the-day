@@ -21940,14 +21940,13 @@ var StorePicker = function (_React$Component) {
       var storeId = this.storeInput.value;
       console.log('Going to ' + storeId);
       // second we're going to transition from / to /store/:storeId
-      this.context.router.transitionTo('/store/' + storeId);
+      // this.context.router.transitionTo(`/store/${storeId}`);
     }
   }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
-      // Any where else
       return _react2.default.createElement(
         'form',
         { className: 'store-selector', onSubmit: function onSubmit(e) {
