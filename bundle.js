@@ -18296,18 +18296,33 @@ var StorePicker = function (_React$Component) {
   }
 
   _createClass(StorePicker, [{
+    key: 'goToStore',
+
+    // constuctor(){
+    //   super();
+    //   this.goToStore = this.goToStore.bind(this);
+    // }
+    value: function goToStore(event) {
+      event.preventDefault();
+      console.log(this.storeInput.value);
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       // Any where else
       return _react2.default.createElement(
         'form',
-        { className: 'store-selector' },
+        { className: 'store-selector', onSubmit: this.goToStore.bind(this) },
         _react2.default.createElement(
           'h2',
           null,
           'Please Enter A Store'
         ),
-        _react2.default.createElement('input', { type: 'text', required: true, placeholder: 'Store Name', defaultValue: (0, _helpers.getFunName)() }),
+        _react2.default.createElement('input', { type: 'text', required: true, placeholder: 'Store Name', defaultValue: (0, _helpers.getFunName)(), ref: function ref(input) {
+            _this2.storeInput = input;
+          } }),
         _react2.default.createElement(
           'button',
           { type: 'submit' },
