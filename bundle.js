@@ -21793,6 +21793,7 @@ var App = function (_React$Component) {
 
     _this.addFish = _this.addFish.bind(_this);
     _this.loadSamples = _this.loadSamples.bind(_this);
+    _this.addToOrder = _this.addToOrder.bind(_this);
     //this is the initial state
     _this.state = {
       fishes: {},
@@ -21800,10 +21801,20 @@ var App = function (_React$Component) {
     };
     return _this;
   }
-  //to add another fish to the state
-
 
   _createClass(App, [{
+    key: 'addToOrder',
+    value: function addToOrder(key) {
+      //copy 
+      var order = this.state.order;
+      //new order
+      order[key] = order[key] + 1 || 1;
+      //update the state
+      this.setState({ order: order });
+    }
+    //to add another fish to the state
+
+  }, {
     key: 'addFish',
     value: function addFish(fish) {
       //first take a copy of the state
@@ -21843,7 +21854,7 @@ var App = function (_React$Component) {
             'ul',
             { className: 'list-of-fishes' },
             Object.keys(this.state.fishes).map(function (key) {
-              return _react2.default.createElement(_Fish2.default, { key: key, details: _this2.state.fishes[key] });
+              return _react2.default.createElement(_Fish2.default, { key: key, index: key, addToOrder: _this2.addToOrder, details: _this2.state.fishes[key] });
             })
           )
         ),
@@ -21893,11 +21904,14 @@ var Fish = function (_React$Component) {
   _createClass(Fish, [{
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
+      var isAvailable = this.props.details.status === 'available';
+      var buttonText = isAvailable ? 'Add to Order' : 'Sold out';
       return _react2.default.createElement(
         'li',
-        { clasName: 'menu-fish' },
+        { className: 'menu-fish' },
         _react2.default.createElement('img', { src: this.props.details.image }),
-        '>',
         _react2.default.createElement(
           'h3',
           null,
@@ -21915,8 +21929,10 @@ var Fish = function (_React$Component) {
         ),
         _react2.default.createElement(
           'button',
-          null,
-          'Add to Order'
+          { disabled: !isAvailable, onClick: function onClick() {
+              return _this2.props.addToOrder(_this2.props.index);
+            } },
+          buttonText
         )
       );
     }
