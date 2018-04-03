@@ -21769,6 +21769,10 @@ var _sampleFishes = require('../sample-fishes');
 
 var _sampleFishes2 = _interopRequireDefault(_sampleFishes);
 
+var _Fish = require('./Fish');
+
+var _Fish2 = _interopRequireDefault(_Fish);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21826,13 +21830,22 @@ var App = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         'div',
         { className: 'catch-of-the-day' },
         _react2.default.createElement(
           'div',
           { className: 'menu' },
-          _react2.default.createElement(_Header2.default, { tagline: 'Fresh Seafood Market' })
+          _react2.default.createElement(_Header2.default, { tagline: 'Fresh Seafood Market' }),
+          _react2.default.createElement(
+            'ul',
+            { className: 'list-of-fishes' },
+            Object.keys(this.state.fishes).map(function (key) {
+              return _react2.default.createElement(_Fish2.default, { key: key, details: _this2.state.fishes[key] });
+            })
+          )
         ),
         _react2.default.createElement(_Order2.default, null),
         _react2.default.createElement(_Inventory2.default, { addFish: this.addFish, loadSamples: this.loadSamples })
@@ -21845,7 +21858,76 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"../sample-fishes":64,"./Header":57,"./Inventory":58,"./Order":60,"react":51}],57:[function(require,module,exports){
+},{"../sample-fishes":65,"./Fish":57,"./Header":58,"./Inventory":59,"./Order":61,"react":51}],57:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _helpers = require('../helpers');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Fish = function (_React$Component) {
+  _inherits(Fish, _React$Component);
+
+  function Fish() {
+    _classCallCheck(this, Fish);
+
+    return _possibleConstructorReturn(this, (Fish.__proto__ || Object.getPrototypeOf(Fish)).apply(this, arguments));
+  }
+
+  _createClass(Fish, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'li',
+        { clasName: 'menu-fish' },
+        _react2.default.createElement('img', { src: this.props.details.image }),
+        '>',
+        _react2.default.createElement(
+          'h3',
+          null,
+          this.props.details.name
+        ),
+        _react2.default.createElement(
+          'span',
+          { className: 'price' },
+          (0, _helpers.formatPrice)(this.props.details.price)
+        ),
+        _react2.default.createElement(
+          'span',
+          null,
+          this.props.details.desc
+        ),
+        _react2.default.createElement(
+          'button',
+          null,
+          'Add to Order'
+        )
+      );
+    }
+  }]);
+
+  return Fish;
+}(_react2.default.Component);
+
+exports.default = Fish;
+
+},{"../helpers":63,"react":51}],58:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21896,7 +21978,7 @@ var Header = function Header(props) {
 
 exports.default = Header;
 
-},{"react":51}],58:[function(require,module,exports){
+},{"react":51}],59:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21956,7 +22038,7 @@ var Inventory = function (_React$Component) {
 
 exports.default = Inventory;
 
-},{"./AddFishForm":55,"react":51}],59:[function(require,module,exports){
+},{"./AddFishForm":55,"react":51}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22002,7 +22084,7 @@ var NotFound = function (_React$Component) {
 
 exports.default = NotFound;
 
-},{"react":51}],60:[function(require,module,exports){
+},{"react":51}],61:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22048,7 +22130,7 @@ var Order = function (_React$Component) {
 
 exports.default = Order;
 
-},{"react":51}],61:[function(require,module,exports){
+},{"react":51}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22128,7 +22210,7 @@ var StorePicker = function (_React$Component) {
 
 exports.default = StorePicker;
 
-},{"../helpers":62,"react":51}],62:[function(require,module,exports){
+},{"../helpers":63,"react":51}],63:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22162,7 +22244,7 @@ function getFunName() {
   return rando(adjectives) + '-' + rando(adjectives) + '-' + rando(nouns);
 }
 
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22203,7 +22285,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _reactDom.render)(_react2.default.createElement(_App2.default, null), document.querySelector('#main'));
 
-},{"./components/App":56,"./components/NotFound":59,"./components/StorePicker":61,"react":51,"react-dom":30,"react-router":38}],64:[function(require,module,exports){
+},{"./components/App":56,"./components/NotFound":60,"./components/StorePicker":62,"react":51,"react-dom":30,"react-router":38}],65:[function(require,module,exports){
 'use strict';
 
 // This is just some sample data so you don't have to think of your own!
@@ -22281,4 +22363,4 @@ module.exports = {
   }
 };
 
-},{}]},{},[63]);
+},{}]},{},[64]);
