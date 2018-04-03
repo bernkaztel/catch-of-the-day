@@ -21642,6 +21642,105 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 },{"_process":22}],55:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddFishForm = function (_React$Component) {
+    _inherits(AddFishForm, _React$Component);
+
+    function AddFishForm() {
+        _classCallCheck(this, AddFishForm);
+
+        return _possibleConstructorReturn(this, (AddFishForm.__proto__ || Object.getPrototypeOf(AddFishForm)).apply(this, arguments));
+    }
+
+    _createClass(AddFishForm, [{
+        key: "createFish",
+        value: function createFish(event) {
+            event.preventDefault();
+            var fish = {
+                name: this.name.value,
+                price: this.price.value,
+                status: this.status.value,
+                desc: this.desc.value,
+                image: this.image.value
+                //We add the method AddFish from the properties of App and we access it by propsnp
+            };this.props.addFish(fish);
+            //To delete the fields of the form 
+            this.fishForm.reset();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                "form",
+                { ref: function ref(input) {
+                        return _this2.fishForm = input;
+                    }, className: "fish-edit", onSubmit: function onSubmit(e) {
+                        return _this2.createFish(e);
+                    } },
+                _react2.default.createElement("input", { ref: function ref(input) {
+                        return _this2.name = input;
+                    }, type: "text", placeholder: "Fish Name" }),
+                _react2.default.createElement("input", { ref: function ref(input) {
+                        return _this2.price = input;
+                    }, type: "text", placeholder: "Fish Price" }),
+                _react2.default.createElement(
+                    "select",
+                    { ref: function ref(input) {
+                            return _this2.status = input;
+                        } },
+                    _react2.default.createElement(
+                        "option",
+                        { value: "available" },
+                        "Fresh!"
+                    ),
+                    _react2.default.createElement(
+                        "option",
+                        { value: "unavailable" },
+                        "Sold Out!"
+                    )
+                ),
+                _react2.default.createElement("textarea", { ref: function ref(input) {
+                        return _this2.desc = input;
+                    }, placeholder: "Fish Desc" }),
+                _react2.default.createElement("input", { ref: function ref(input) {
+                        return _this2.image = input;
+                    }, type: "text", placeholder: "Fish Image" }),
+                _react2.default.createElement(
+                    "button",
+                    { type: "submit" },
+                    "+ Add Item"
+                )
+            );
+        }
+    }]);
+
+    return AddFishForm;
+}(_react2.default.Component);
+
+exports.default = AddFishForm;
+
+},{"react":51}],56:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21680,10 +21779,37 @@ var App = function (_React$Component) {
   function App() {
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+    //always before using this
+
+
+    _this.addFish = _this.addFish.bind(_this);
+    //this is the initial state
+    _this.state = {
+      fishes: {},
+      order: {}
+    };
+    return _this;
   }
+  //to add another fish to the state
+
 
   _createClass(App, [{
+    key: 'addFish',
+    value: function addFish(fish) {
+      //first take a copy of the state
+      //... is a spread: it will take every item from an object and spread it to an object
+      var fishes = this.state.fishes;
+      console.log(fishes);
+      //second we add our second fish 
+      //we use a time stamp as a key to the fishes 
+      var timeStamp = Date.now();
+      fishes['fish' + timeStamp] = fish;
+      console.log(fish);
+      //thrid we update our state
+      this.setState({ fishes: fishes });
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -21695,7 +21821,7 @@ var App = function (_React$Component) {
           _react2.default.createElement(_Header2.default, { tagline: 'Fresh Seafood Market' })
         ),
         _react2.default.createElement(_Order2.default, null),
-        _react2.default.createElement(_Inventory2.default, null)
+        _react2.default.createElement(_Inventory2.default, { addFish: this.addFish })
       );
     }
   }]);
@@ -21705,7 +21831,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Header":56,"./Inventory":57,"./Order":59,"react":51}],56:[function(require,module,exports){
+},{"./Header":57,"./Inventory":58,"./Order":60,"react":51}],57:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21756,7 +21882,7 @@ var Header = function Header(props) {
 
 exports.default = Header;
 
-},{"react":51}],57:[function(require,module,exports){
+},{"react":51}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21768,6 +21894,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _AddFishForm = require('./AddFishForm');
+
+var _AddFishForm2 = _interopRequireDefault(_AddFishForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21790,9 +21920,14 @@ var Inventory = function (_React$Component) {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        'p',
+        'div',
         null,
-        'Inventory'
+        _react2.default.createElement(
+          'h2',
+          null,
+          'Inventory'
+        ),
+        _react2.default.createElement(_AddFishForm2.default, { addFish: this.props.addFish })
       );
     }
   }]);
@@ -21802,7 +21937,7 @@ var Inventory = function (_React$Component) {
 
 exports.default = Inventory;
 
-},{"react":51}],58:[function(require,module,exports){
+},{"./AddFishForm":55,"react":51}],59:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21848,7 +21983,7 @@ var NotFound = function (_React$Component) {
 
 exports.default = NotFound;
 
-},{"react":51}],59:[function(require,module,exports){
+},{"react":51}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21894,7 +22029,7 @@ var Order = function (_React$Component) {
 
 exports.default = Order;
 
-},{"react":51}],60:[function(require,module,exports){
+},{"react":51}],61:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21974,7 +22109,7 @@ var StorePicker = function (_React$Component) {
 
 exports.default = StorePicker;
 
-},{"../helpers":61,"react":51}],61:[function(require,module,exports){
+},{"../helpers":62,"react":51}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22008,7 +22143,7 @@ function getFunName() {
   return rando(adjectives) + '-' + rando(adjectives) + '-' + rando(nouns);
 }
 
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22047,6 +22182,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // render(<Root/>, document.querySelector('#main'));
 
 
-(0, _reactDom.render)(_react2.default.createElement(_StorePicker2.default, null), document.querySelector('#main'));
+(0, _reactDom.render)(_react2.default.createElement(_App2.default, null), document.querySelector('#main'));
 
-},{"./components/App":55,"./components/NotFound":58,"./components/StorePicker":60,"react":51,"react-dom":30,"react-router":38}]},{},[62]);
+},{"./components/App":56,"./components/NotFound":59,"./components/StorePicker":61,"react":51,"react-dom":30,"react-router":38}]},{},[63]);

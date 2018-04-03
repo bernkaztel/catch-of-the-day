@@ -21,4 +21,4 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 
 
 
-  render(<StorePicker/>, document.querySelector('#main'));
+  render(<App/>, document.querySelector('#main'));
