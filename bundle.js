@@ -24897,6 +24897,10 @@ var _AddFishForm = require('./AddFishForm');
 
 var _AddFishForm2 = _interopRequireDefault(_AddFishForm);
 
+var _base = require('../base');
+
+var _base2 = _interopRequireDefault(_base);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24915,6 +24919,14 @@ var Inventory = function (_React$Component) {
 
     _this.renderInventory = _this.renderInventory.bind(_this);
     _this.handleChange = _this.handleChange.bind(_this);
+    _this.renderLogin = _this.renderLogin.bind(_this);
+    _this.authenticate = _this.authenticate.bind(_this);
+    _this.authHandler = _this.authHandler.bind(_this);
+
+    _this.state = {
+      uid: null,
+      owner: null
+    };
     return _this;
   }
 
@@ -24928,24 +24940,76 @@ var Inventory = function (_React$Component) {
       this.props.updateFish(key, updatedFish);
     }
   }, {
+    key: 'renderLogin',
+    value: function renderLogin() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'nav',
+        { className: 'login' },
+        _react2.default.createElement(
+          'h2',
+          null,
+          'Inventory'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'Sign in to manage your store\'s inventory'
+        ),
+        _react2.default.createElement(
+          'button',
+          { className: 'github', onClick: function onClick() {
+              return _this2.authenticate('github');
+            } },
+          'Log In with Github'
+        ),
+        _react2.default.createElement(
+          'button',
+          { className: 'facebook', onClick: function onClick() {
+              return _this2.authenticate('facebook');
+            } },
+          'Log In with Facebook'
+        ),
+        _react2.default.createElement(
+          'button',
+          { className: 'twitter', onClick: function onClick() {
+              return _this2.authenticate('twitter');
+            } },
+          'Log In with Twitter'
+        )
+      );
+    }
+  }, {
+    key: 'authenticate',
+    value: function authenticate(provider) {
+      _base2.default.authWithOAuthPopup(provider, this.authHandler);
+      console.log(provider);
+    }
+  }, {
+    key: 'authHandler',
+    value: function authHandler(err, authData) {
+      console.log(authData);
+    }
+  }, {
     key: 'renderInventory',
     value: function renderInventory(key) {
-      var _this2 = this;
+      var _this3 = this;
 
       var fish = this.props.fishes[key];
       return _react2.default.createElement(
         'div',
         { className: 'fish-edit', key: key },
         _react2.default.createElement('input', { type: 'text', name: 'name', value: fish.name, placeholder: 'Fish Name', onChange: function onChange(e) {
-            return _this2.handleChange(e, key);
+            return _this3.handleChange(e, key);
           } }),
         _react2.default.createElement('input', { type: 'text', name: 'price', value: fish.price, placeholder: 'Fish Price', onChange: function onChange(e) {
-            return _this2.handleChange(e, key);
+            return _this3.handleChange(e, key);
           } }),
         _react2.default.createElement(
           'select',
           { type: 'text', name: 'status', value: fish.status, placeholder: 'Fish Status', onChange: function onChange(e) {
-              return _this2.handleChange(e, key);
+              return _this3.handleChange(e, key);
             } },
           _react2.default.createElement(
             'option',
@@ -24959,15 +25023,15 @@ var Inventory = function (_React$Component) {
           )
         ),
         _react2.default.createElement('textarea', { type: 'text', name: 'desc', value: fish.desc, placeholder: 'Fish Desc', onChange: function onChange(e) {
-            return _this2.handleChange(e, key);
+            return _this3.handleChange(e, key);
           } }),
         _react2.default.createElement('input', { type: 'text', name: 'image', value: fish.image, placeholder: 'Fish Image', onChange: function onChange(e) {
-            return _this2.handleChange(e, key);
+            return _this3.handleChange(e, key);
           } }),
         _react2.default.createElement(
           'button',
           { onClick: function onClick() {
-              return _this2.props.removeFish(key);
+              return _this3.props.removeFish(key);
             } },
           'Remove Fish'
         )
@@ -24976,6 +25040,30 @@ var Inventory = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var logout = _react2.default.createElement(
+        'button',
+        null,
+        'Log Out'
+      );
+      //If there's no one logged in
+      if (!this.state.uid) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          this.renderLogin()
+        );
+      }
+      if (!this.state.uid !== this.state.owner) {
+        _react2.default.createElement(
+          'p',
+          null,
+          'You aren\'t the owner of this store'
+        );
+        {
+          logout;
+        }
+      }
+
       return _react2.default.createElement(
         'div',
         null,
@@ -25000,7 +25088,7 @@ var Inventory = function (_React$Component) {
 
 exports.default = Inventory;
 
-},{"./AddFishForm":77,"react":72}],82:[function(require,module,exports){
+},{"../base":76,"./AddFishForm":77,"react":72}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
