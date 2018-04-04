@@ -23627,6 +23627,8 @@ var App = function (_React$Component) {
     };
     return _this;
   }
+  //When the component is about to mount this checks the database in firebase
+
 
   _createClass(App, [{
     key: 'componentWillMount',
@@ -23636,6 +23638,26 @@ var App = function (_React$Component) {
         context: this,
         state: 'fishes'
       });
+
+      //check if there's an order in local storage
+      var localStorageRef = localStorage.getItem('order-mystore');
+      var order = this.state.order;
+      if (localStorageRef) {
+        this.setState({
+          order: JSON.parse(localStorageRef)
+        });
+      } else {
+        this.setState({ order: order });
+      }
+    }
+    //Eveytime the component update
+    //this will always have nextProps as a parameter 
+
+  }, {
+    key: 'componentWillUpdate',
+    value: function componentWillUpdate(nextProps, nextState) {
+      //TODO: Revisar routing y colocar store id
+      localStorage.setItem('order-mystore', JSON.stringify(nextState.order));
     }
   }, {
     key: 'addToOrder',
@@ -23693,7 +23715,7 @@ var App = function (_React$Component) {
             })
           )
         ),
-        _react2.default.createElement(_Order2.default, { fishes: this.state.fishes, order: this.state.order }),
+        _react2.default.createElement(_Order2.default, { fishes: this.state.fishes, order: this.state.order, params: this.props.params }),
         _react2.default.createElement(_Inventory2.default, { addFish: this.addFish, loadSamples: this.loadSamples })
       );
     }
