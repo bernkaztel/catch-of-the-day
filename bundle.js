@@ -25277,6 +25277,10 @@ var StorePicker = function (_React$Component) {
   return StorePicker;
 }(_react2.default.Component);
 
+// StorePicker.contextTypes = {
+//   router: React.PropTypes.object
+// }
+
 exports.default = StorePicker;
 
 },{"../helpers":85,"react":72}],85:[function(require,module,exports){
