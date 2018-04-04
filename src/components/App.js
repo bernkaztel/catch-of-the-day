@@ -13,6 +13,7 @@ class App extends React.Component {
     this.addFish = this.addFish.bind(this);
     this.loadSamples = this.loadSamples.bind(this);
     this.addToOrder = this.addToOrder.bind(this);
+    this.updateFish = this.updateFish.bind(this);
     //this is the initial state
     this.state={
       fishes: {},
@@ -69,6 +70,11 @@ this.setState({order});
     //thrid we update our state
     this.setState({ fishes });
   }
+  updateFish(key, updateFish){ 
+    const fishes = (this.state.fishes); 
+    fishes[key] =   updateFish;
+    this.setState({fishes});
+  }
   //to load fishes sample 
   loadSamples(){
     this.setState({
@@ -88,7 +94,7 @@ this.setState({order});
           </ul>
         </div>
         <Order fishes={this.state.fishes} order={this.state.order} params={this.props.params}/>
-        <Inventory addFish={this.addFish}  loadSamples={this.loadSamples}/>
+        <Inventory addFish={this.addFish}  loadSamples={this.loadSamples} fishes={this.state.fishes} updateFish={this.updateFish}/>
       </div>
     )
   }

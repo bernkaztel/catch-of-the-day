@@ -23620,6 +23620,7 @@ var App = function (_React$Component) {
     _this.addFish = _this.addFish.bind(_this);
     _this.loadSamples = _this.loadSamples.bind(_this);
     _this.addToOrder = _this.addToOrder.bind(_this);
+    _this.updateFish = _this.updateFish.bind(_this);
     //this is the initial state
     _this.state = {
       fishes: {},
@@ -23686,6 +23687,13 @@ var App = function (_React$Component) {
       //thrid we update our state
       this.setState({ fishes: fishes });
     }
+  }, {
+    key: 'updateFish',
+    value: function updateFish(key, _updateFish) {
+      var fishes = this.state.fishes;
+      fishes[key] = _updateFish;
+      this.setState({ fishes: fishes });
+    }
     //to load fishes sample 
 
   }, {
@@ -23716,7 +23724,7 @@ var App = function (_React$Component) {
           )
         ),
         _react2.default.createElement(_Order2.default, { fishes: this.state.fishes, order: this.state.order, params: this.props.params }),
-        _react2.default.createElement(_Inventory2.default, { addFish: this.addFish, loadSamples: this.loadSamples })
+        _react2.default.createElement(_Inventory2.default, { addFish: this.addFish, loadSamples: this.loadSamples, fishes: this.state.fishes, updateFish: this.updateFish })
       );
     }
   }]);
@@ -23882,10 +23890,62 @@ var Inventory = function (_React$Component) {
   function Inventory() {
     _classCallCheck(this, Inventory);
 
-    return _possibleConstructorReturn(this, (Inventory.__proto__ || Object.getPrototypeOf(Inventory)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Inventory.__proto__ || Object.getPrototypeOf(Inventory)).call(this));
+
+    _this.renderInventory = _this.renderInventory.bind(_this);
+    _this.handleChange = _this.handleChange.bind(_this);
+    return _this;
   }
 
   _createClass(Inventory, [{
+    key: 'handleChange',
+    value: function handleChange(e, key) {
+      var fish = this.props.fishes[key];
+      //take the copy of the fish 
+      var updatedFish = Object.assign({}, fish);
+      updatedFish[e.target.name] = e.target.value;
+      this.props.updateFish(key, updatedFish);
+    }
+  }, {
+    key: 'renderInventory',
+    value: function renderInventory(key) {
+      var _this2 = this;
+
+      var fish = this.props.fishes[key];
+      return _react2.default.createElement(
+        'div',
+        { className: 'fish-edit', key: key },
+        _react2.default.createElement('input', { type: 'text', name: 'name', value: fish.name, placeholder: 'Fish Name', onChange: function onChange(e) {
+            return _this2.handleChange(e, key);
+          } }),
+        _react2.default.createElement('input', { type: 'text', name: 'price', value: fish.price, placeholder: 'Fish Price', onChange: function onChange(e) {
+            return _this2.handleChange(e, key);
+          } }),
+        _react2.default.createElement(
+          'select',
+          { type: 'text', name: 'status', value: fish.status, placeholder: 'Fish Status', onChange: function onChange(e) {
+              return _this2.handleChange(e, key);
+            } },
+          _react2.default.createElement(
+            'option',
+            { value: 'available' },
+            'Fresh!'
+          ),
+          _react2.default.createElement(
+            'option',
+            { value: 'unavailable' },
+            'Sold Out!'
+          )
+        ),
+        _react2.default.createElement('textarea', { type: 'text', name: 'desc', value: fish.desc, placeholder: 'Fish Desc', onChange: function onChange(e) {
+            return _this2.handleChange(e, key);
+          } }),
+        _react2.default.createElement('input', { type: 'text', name: 'image', value: fish.image, placeholder: 'Fish Image', onChange: function onChange(e) {
+            return _this2.handleChange(e, key);
+          } })
+      );
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -23896,6 +23956,7 @@ var Inventory = function (_React$Component) {
           null,
           'Inventory'
         ),
+        Object.keys(this.props.fishes).map(this.renderInventory),
         _react2.default.createElement(_AddFishForm2.default, { addFish: this.props.addFish }),
         _react2.default.createElement(
           'button',
