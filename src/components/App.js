@@ -2,8 +2,9 @@ import React from 'react';
 import Header from './Header';
 import Order from './Order';
 import Inventory from './Inventory';
-import sampleFishes from '../sample-fishes'
-import Fish from "./Fish"
+import sampleFishes from '../sample-fishes';
+import Fish from "./Fish";
+import base from "../base";
 
 class App extends React.Component {
   constructor(){
@@ -14,13 +15,17 @@ class App extends React.Component {
     this.addToOrder = this.addToOrder.bind(this);
     //this is the initial state
     this.state={
-      fishes: {
-
-      },
-      order: {
-
-      }
+      fishes: {},
+      order: {}
     }
+  }
+  componentWillMount(){
+    //TODO: Revisar el routing y colocar el id que corresponde ({$this.props.params.storeId}/fishes)
+   this.ref = base.syncState(`my-store`
+   ,{
+     context: this,
+     state: 'fishes'
+   });
   }
   addToOrder(key){
 //copy 
