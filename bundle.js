@@ -23563,7 +23563,7 @@ var AddFishForm = function (_React$Component) {
 exports.default = AddFishForm;
 
 },{"react":59}],65:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -23571,31 +23571,31 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Header = require('./Header');
+var _Header = require("./Header");
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Order = require('./Order');
+var _Order = require("./Order");
 
 var _Order2 = _interopRequireDefault(_Order);
 
-var _Inventory = require('./Inventory');
+var _Inventory = require("./Inventory");
 
 var _Inventory2 = _interopRequireDefault(_Inventory);
 
-var _sampleFishes = require('../sample-fishes');
+var _sampleFishes = require("../sample-fishes");
 
 var _sampleFishes2 = _interopRequireDefault(_sampleFishes);
 
-var _Fish = require('./Fish');
+var _Fish = require("./Fish");
 
 var _Fish2 = _interopRequireDefault(_Fish);
 
-var _base = require('../base');
+var _base = require("../base");
 
 var _base2 = _interopRequireDefault(_base);
 
@@ -23618,9 +23618,11 @@ var App = function (_React$Component) {
 
 
     _this.addFish = _this.addFish.bind(_this);
+    _this.removeFish = _this.removeFish.bind(_this);
     _this.loadSamples = _this.loadSamples.bind(_this);
     _this.addToOrder = _this.addToOrder.bind(_this);
     _this.updateFish = _this.updateFish.bind(_this);
+    _this.removeFromOrder = _this.removeFromOrder.bind(_this);
     //this is the initial state
     _this.state = {
       fishes: {},
@@ -23632,16 +23634,16 @@ var App = function (_React$Component) {
 
 
   _createClass(App, [{
-    key: 'componentWillMount',
+    key: "componentWillMount",
     value: function componentWillMount() {
       //TODO: Revisar el routing y colocar el id que corresponde ({$this.props.params.storeId}/fishes)
-      this.ref = _base2.default.syncState('my-store', {
+      this.ref = _base2.default.syncState("my-store", {
         context: this,
-        state: 'fishes'
+        state: "fishes"
       });
 
       //check if there's an order in local storage
-      var localStorageRef = localStorage.getItem('order-mystore');
+      var localStorageRef = localStorage.getItem("order-mystore");
       var order = this.state.order;
       if (localStorageRef) {
         this.setState({
@@ -23652,79 +23654,109 @@ var App = function (_React$Component) {
       }
     }
     //Eveytime the component update
-    //this will always have nextProps as a parameter 
+    //this will always have nextProps as a parameter
 
   }, {
-    key: 'componentWillUpdate',
+    key: "componentWillUpdate",
     value: function componentWillUpdate(nextProps, nextState) {
       //TODO: Revisar routing y colocar store id
-      localStorage.setItem('order-mystore', JSON.stringify(nextState.order));
+      localStorage.setItem("order-mystore", JSON.stringify(nextState.order));
     }
   }, {
-    key: 'addToOrder',
+    key: "addToOrder",
     value: function addToOrder(key) {
-      //copy 
+      //copy
       var order = this.state.order;
       //new order
       order[key] = order[key] + 1 || 1;
       //update the state
       this.setState({ order: order });
     }
+  }, {
+    key: "removeFromOrder",
+    value: function removeFromOrder(key) {
+      var order = this.state.order;
+      delete order[key];
+      this.setState({ order: order });
+    }
     //to add another fish to the state
 
   }, {
-    key: 'addFish',
+    key: "addFish",
     value: function addFish(fish) {
       //first take a copy of the state
       //... is a spread: it will take every item from an object and spread it to an object
       var fishes = this.state.fishes;
       console.log(fishes);
-      //second we add our second fish 
-      //we use a time stamp as a key to the fishes 
+      //second we add our second fish
+      //we use a time stamp as a key to the fishes
       var timeStamp = Date.now();
-      fishes['fish' + timeStamp] = fish;
+      fishes["fish" + timeStamp] = fish;
       console.log(fish);
       //thrid we update our state
       this.setState({ fishes: fishes });
     }
   }, {
-    key: 'updateFish',
+    key: "updateFish",
     value: function updateFish(key, _updateFish) {
       var fishes = this.state.fishes;
       fishes[key] = _updateFish;
       this.setState({ fishes: fishes });
     }
-    //to load fishes sample 
+    //to load fishes sample
 
   }, {
-    key: 'loadSamples',
+    key: "loadSamples",
     value: function loadSamples() {
       this.setState({
         fishes: _sampleFishes2.default
       });
     }
   }, {
-    key: 'render',
+    key: "removeFish",
+    value: function removeFish(key) {
+      var fishes = this.state.fishes;
+      fishes[key] = null;
+      this.setState({ fishes: fishes });
+    }
+  }, {
+    key: "render",
     value: function render() {
       var _this2 = this;
 
       return _react2.default.createElement(
-        'div',
-        { className: 'catch-of-the-day' },
+        "div",
+        { className: "catch-of-the-day" },
         _react2.default.createElement(
-          'div',
-          { className: 'menu' },
-          _react2.default.createElement(_Header2.default, { tagline: 'Fresh Seafood Market' }),
+          "div",
+          { className: "menu" },
+          _react2.default.createElement(_Header2.default, { tagline: "Fresh Seafood Market" }),
           _react2.default.createElement(
-            'ul',
-            { className: 'list-of-fishes' },
+            "ul",
+            { className: "list-of-fishes" },
             Object.keys(this.state.fishes).map(function (key) {
-              return _react2.default.createElement(_Fish2.default, { key: key, index: key, addToOrder: _this2.addToOrder, details: _this2.state.fishes[key] });
+              return _react2.default.createElement(_Fish2.default, {
+                key: key,
+                index: key,
+                addToOrder: _this2.addToOrder,
+                details: _this2.state.fishes[key]
+              });
             })
           )
         ),
-        _react2.default.createElement(_Order2.default, { fishes: this.state.fishes, order: this.state.order, params: this.props.params }),
-        _react2.default.createElement(_Inventory2.default, { addFish: this.addFish, loadSamples: this.loadSamples, fishes: this.state.fishes, updateFish: this.updateFish })
+        _react2.default.createElement(_Order2.default, {
+          fishes: this.state.fishes,
+          order: this.state.order,
+          removeFromOrder: this.removeFromOrder,
+          params: this.props.params
+        }),
+        _react2.default.createElement(_Inventory2.default, {
+          addFish: this.addFish,
+          removeFish: this.removeFish,
+          loadSamples: this.loadSamples,
+          fishes: this.state.fishes,
+          updateFish: this.updateFish
+        })
       );
     }
   }]);
@@ -23942,7 +23974,14 @@ var Inventory = function (_React$Component) {
           } }),
         _react2.default.createElement('input', { type: 'text', name: 'image', value: fish.image, placeholder: 'Fish Image', onChange: function onChange(e) {
             return _this2.handleChange(e, key);
-          } })
+          } }),
+        _react2.default.createElement(
+          'button',
+          { onClick: function onClick() {
+              return _this2.props.removeFish(key);
+            } },
+          'Remove Fish'
+        )
       );
     }
   }, {
@@ -24056,6 +24095,8 @@ var Order = function (_React$Component) {
   _createClass(Order, [{
     key: 'renderOrder',
     value: function renderOrder(key) {
+      var _this2 = this;
+
       var fish = this.props.fishes[key];
       var count = this.props.order[key];
       if (!fish || fish.status === 'unavailable') {
@@ -24064,7 +24105,15 @@ var Order = function (_React$Component) {
           { key: key },
           'Sorry, ',
           fish ? fish.name : 'fish',
-          ' is no longer available! '
+          ' is no longer available!',
+          _react2.default.createElement(
+            'button',
+            { onClick: function onClick() {
+                return _this2.props.removeFromOrder(key);
+              } },
+            '\xD7'
+          ),
+          ' '
         );
       }
       return _react2.default.createElement(
@@ -24081,18 +24130,25 @@ var Order = function (_React$Component) {
           'span',
           { className: 'price' },
           (0, _helpers.formatPrice)(count * fish.price)
+        ),
+        _react2.default.createElement(
+          'button',
+          { onClick: function onClick() {
+              return _this2.props.removeFromOrder(key);
+            } },
+          '\xD7'
         )
       );
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var orderIds = Object.keys(this.props.order);
       var total = orderIds.reduce(function (prevTotal, key) {
-        var fish = _this2.props.fishes[key];
-        var count = _this2.props.order[key];
+        var fish = _this3.props.fishes[key];
+        var count = _this3.props.order[key];
         var isAvailable = fish && fish.status === 'available';
         if (isAvailable) {
           return prevTotal + (count * fish.price || 0);
