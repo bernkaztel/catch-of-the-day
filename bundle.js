@@ -21858,7 +21858,7 @@ var App = function (_React$Component) {
             })
           )
         ),
-        _react2.default.createElement(_Order2.default, null),
+        _react2.default.createElement(_Order2.default, { fishes: this.state.fishes, order: this.state.order }),
         _react2.default.createElement(_Inventory2.default, { addFish: this.addFish, loadSamples: this.loadSamples })
       );
     }
@@ -22113,6 +22113,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _helpers = require('../helpers');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22127,16 +22129,81 @@ var Order = function (_React$Component) {
   function Order() {
     _classCallCheck(this, Order);
 
-    return _possibleConstructorReturn(this, (Order.__proto__ || Object.getPrototypeOf(Order)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Order.__proto__ || Object.getPrototypeOf(Order)).call(this));
+
+    _this.renderOrder = _this.renderOrder.bind(_this);
+    return _this;
   }
 
   _createClass(Order, [{
+    key: 'renderOrder',
+    value: function renderOrder(key) {
+      var fish = this.props.fishes[key];
+      var count = this.props.order[key];
+      if (!fish || fish.status === 'unavailable') {
+        return _react2.default.createElement(
+          'li',
+          { key: key },
+          'Sorry, ',
+          fish ? fish.name : 'fish',
+          ' is no longer available! '
+        );
+      }
+      return _react2.default.createElement(
+        'li',
+        { key: key },
+        _react2.default.createElement(
+          'span',
+          null,
+          count,
+          'lbs ',
+          fish.name
+        ),
+        _react2.default.createElement(
+          'span',
+          { className: 'price' },
+          (0, _helpers.formatPrice)(count * fish.price)
+        )
+      );
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
+      var orderIds = Object.keys(this.props.order);
+      var total = orderIds.reduce(function (prevTotal, key) {
+        var fish = _this2.props.fishes[key];
+        var count = _this2.props.order[key];
+        var isAvailable = fish && fish.status === 'available';
+        if (isAvailable) {
+          return prevTotal + (count * fish.price || 0);
+        }
+        return prevTotal;
+      }, 0);
       return _react2.default.createElement(
-        'p',
-        null,
-        'Order'
+        'div',
+        { className: 'order-wrap' },
+        _react2.default.createElement(
+          'h2',
+          null,
+          'Order'
+        ),
+        _react2.default.createElement(
+          'ul',
+          { className: 'order' },
+          orderIds.map(this.renderOrder),
+          _react2.default.createElement(
+            'li',
+            { className: 'total' },
+            _react2.default.createElement(
+              'strong',
+              null,
+              'Total:'
+            ),
+            (0, _helpers.formatPrice)(total)
+          )
+        )
       );
     }
   }]);
@@ -22146,7 +22213,7 @@ var Order = function (_React$Component) {
 
 exports.default = Order;
 
-},{"react":51}],62:[function(require,module,exports){
+},{"../helpers":63,"react":51}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
