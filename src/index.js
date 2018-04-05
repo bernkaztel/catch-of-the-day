@@ -7,9 +7,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
   import NotFound from './components/NotFound';
 
   const Router = () => (
-    <BrowserRouter>
+    <BrowserRouter basename="/catch-of-the-day/">
       <Switch>
-        <Route exact path="/catch-of-the-day/" component={StorePicker} />
+        <Route exact path="/" component={StorePicker} />
         <Route path="/store/:storeId" component={App} />
         <Route component={NotFound} />
       </Switch>
