@@ -113,12 +113,9 @@ class Inventory extends React.Component {
     if(this.state.uid !== this.state.owner) {
       return (
         <div>
-        <h2>Inventory</h2>
-        {logout}
-        {Object.keys(this.props.fishes).map(this.renderInventory)}
-        <AddFishForm addFish={this.props.addFish}/>
-        <button onClick={this.props.loadSamples}>Load Sample Fishes</button>
-      </div>
+          <p>Sorry you aren't the owner of this store!</p>
+          {logout}
+        </div>
       )
     }
 

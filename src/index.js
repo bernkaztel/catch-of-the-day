@@ -1,24 +1,21 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Match, Miss } from 'react-router';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
   import StorePicker from './components/StorePicker';
   import App from './components/App';
   import NotFound from './components/NotFound';
 
-  // const Root = () => {
-  //   return (
-  //     <BrowserRouter>
-  //       <div>
-  //         <Match exactly pattern="/" component={StorePicker} />
-  //         <Match pattern="/store/:storeId" component={App} />
-  //         <Miss component={NotFound} />
-  //       </div>
-  //     </BrowserRouter>
-  //   )
-  // }
-  // render(<Root/>, document.querySelector('#main'));
+  const Router = () => (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={StorePicker} />
+        <Route path="/store/:storeId" component={App} />
+        <Route component={NotFound} />
+      </Switch>
+    </BrowserRouter>
+  );
 
 
+  render(<Router />, document.querySelector("#main"));
 
-  render(<App/>, document.querySelector('#main'));

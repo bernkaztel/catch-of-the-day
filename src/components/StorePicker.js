@@ -2,25 +2,30 @@ import React from 'react';
 import { getFunName } from '../helpers';
 
 class StorePicker extends React.Component {
-  // constructor() {
-  //   super();
-  //   this.goToStore = this.goToStore.bind(this);
-  // }
-  goToStore(event) {
+   constructor() {
+     super();
+     this.goToStore = this.goToStore.bind(this);
+   }
+  goToStore(event){
+    // 1. Stop the form from submitting
     event.preventDefault();
-    console.log('You Changed the URL');
-    // first grab the text from the box
+    // 2. get the text from that input
     const storeId = this.storeInput.value;
-    console.log(`Going to ${storeId}`)
-    // second we're going to transition from / to /store/:storeId
-    // this.context.router.transitionTo(`/store/${storeId}`);
-  }
+    // 3. Change the page to /store/whatever-they-entered
+    this.props.history.push(`/store/${storeId}`);
+  };
 
   render() {
     return (
       <form className="store-selector" onSubmit={(e) => this.goToStore(e)}>
         <h2>Please Enter A Store</h2>
-        <input type="text" required placeholder="Store Name" defaultValue={getFunName()} ref={(input) => { this.storeInput = input}} />
+        <input
+          type="text"
+          ref={this.myInput}
+          required
+          placeholder="Store Name"
+          defaultValue={getFunName()} ref={(input) => { this.storeInput = input}}
+        />
         <button type="submit">Visit Store →</button>
       </form>
     )
