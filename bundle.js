@@ -24918,11 +24918,11 @@ var Inventory = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Inventory.__proto__ || Object.getPrototypeOf(Inventory)).call(this));
 
     _this.renderInventory = _this.renderInventory.bind(_this);
-    _this.handleChange = _this.handleChange.bind(_this);
     _this.renderLogin = _this.renderLogin.bind(_this);
     _this.authenticate = _this.authenticate.bind(_this);
+    _this.logout = _this.logout.bind(_this);
     _this.authHandler = _this.authHandler.bind(_this);
-
+    _this.handleChange = _this.handleChange.bind(_this);
     _this.state = {
       uid: null,
       owner: null
@@ -24931,6 +24931,17 @@ var Inventory = function (_React$Component) {
   }
 
   _createClass(Inventory, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      _base2.default.onAuth(function (user) {
+        if (user) {
+          _this2.authHandler(null, { user: user });
+        }
+      });
+    }
+  }, {
     key: 'handleChange',
     value: function handleChange(e, key) {
       var fish = this.props.fishes[key];
@@ -24940,9 +24951,52 @@ var Inventory = function (_React$Component) {
       this.props.updateFish(key, updatedFish);
     }
   }, {
+    key: 'authenticate',
+    value: function authenticate(provider) {
+      console.log('Trying to log in with ' + provider);
+      _base2.default.authWithOAuthPopup(provider, this.authHandler);
+    }
+  }, {
+    key: 'logout',
+    value: function logout() {
+      _base2.default.unauth();
+      this.setState({ uid: null });
+    }
+  }, {
+    key: 'authHandler',
+    value: function authHandler(err, authData) {
+      var _this3 = this;
+
+      console.log(authData);
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      // grab the store info
+      var storeRef = _base2.default.database().ref(this.props.storeId);
+
+      // query the firebase once for the store data
+      storeRef.once('value', function (snapshot) {
+        var data = snapshot.val() || {};
+
+        // claim it as our own if there is no owner already
+        if (!data.owner) {
+          storeRef.set({
+            owner: authData.user.uid
+          });
+        }
+
+        _this3.setState({
+          uid: authData.user.uid,
+          owner: data.owner || authData.user.uid
+        });
+      });
+    }
+  }, {
     key: 'renderLogin',
     value: function renderLogin() {
-      var _this2 = this;
+      var _this4 = this;
 
       return _react2.default.createElement(
         'nav',
@@ -24960,56 +25014,45 @@ var Inventory = function (_React$Component) {
         _react2.default.createElement(
           'button',
           { className: 'github', onClick: function onClick() {
-              return _this2.authenticate('github');
+              return _this4.authenticate('github');
             } },
           'Log In with Github'
         ),
         _react2.default.createElement(
           'button',
           { className: 'facebook', onClick: function onClick() {
-              return _this2.authenticate('facebook');
+              return _this4.authenticate('facebook');
             } },
           'Log In with Facebook'
         ),
         _react2.default.createElement(
           'button',
           { className: 'twitter', onClick: function onClick() {
-              return _this2.authenticate('twitter');
+              return _this4.authenticate('twitter');
             } },
           'Log In with Twitter'
         )
       );
     }
   }, {
-    key: 'authenticate',
-    value: function authenticate(provider) {
-      _base2.default.authWithOAuthPopup(provider, this.authHandler);
-      console.log(provider);
-    }
-  }, {
-    key: 'authHandler',
-    value: function authHandler(err, authData) {
-      console.log(authData);
-    }
-  }, {
     key: 'renderInventory',
     value: function renderInventory(key) {
-      var _this3 = this;
+      var _this5 = this;
 
       var fish = this.props.fishes[key];
       return _react2.default.createElement(
         'div',
         { className: 'fish-edit', key: key },
         _react2.default.createElement('input', { type: 'text', name: 'name', value: fish.name, placeholder: 'Fish Name', onChange: function onChange(e) {
-            return _this3.handleChange(e, key);
+            return _this5.handleChange(e, key);
           } }),
         _react2.default.createElement('input', { type: 'text', name: 'price', value: fish.price, placeholder: 'Fish Price', onChange: function onChange(e) {
-            return _this3.handleChange(e, key);
+            return _this5.handleChange(e, key);
           } }),
         _react2.default.createElement(
           'select',
           { type: 'text', name: 'status', value: fish.status, placeholder: 'Fish Status', onChange: function onChange(e) {
-              return _this3.handleChange(e, key);
+              return _this5.handleChange(e, key);
             } },
           _react2.default.createElement(
             'option',
@@ -25023,15 +25066,15 @@ var Inventory = function (_React$Component) {
           )
         ),
         _react2.default.createElement('textarea', { type: 'text', name: 'desc', value: fish.desc, placeholder: 'Fish Desc', onChange: function onChange(e) {
-            return _this3.handleChange(e, key);
+            return _this5.handleChange(e, key);
           } }),
         _react2.default.createElement('input', { type: 'text', name: 'image', value: fish.image, placeholder: 'Fish Image', onChange: function onChange(e) {
-            return _this3.handleChange(e, key);
+            return _this5.handleChange(e, key);
           } }),
         _react2.default.createElement(
           'button',
           { onClick: function onClick() {
-              return _this3.props.removeFish(key);
+              return _this5.props.removeFish(key);
             } },
           'Remove Fish'
         )
@@ -25042,10 +25085,11 @@ var Inventory = function (_React$Component) {
     value: function render() {
       var logout = _react2.default.createElement(
         'button',
-        null,
-        'Log Out'
+        { onClick: this.logout },
+        'Log Out!'
       );
-      //If there's no one logged in
+
+      // check if they are no logged in at all
       if (!this.state.uid) {
         return _react2.default.createElement(
           'div',
@@ -25053,15 +25097,31 @@ var Inventory = function (_React$Component) {
           this.renderLogin()
         );
       }
-      if (!this.state.uid !== this.state.owner) {
-        _react2.default.createElement(
-          'p',
+
+      // Check if they are the owner of the current store
+      if (this.state.uid !== this.state.owner) {
+        return _react2.default.createElement(
+          'div',
           null,
-          'You aren\'t the owner of this store'
+          _react2.default.createElement(
+            'h1',
+            null,
+            'You\'re not the owner of this store'
+          ),
+          _react2.default.createElement(
+            'h2',
+            null,
+            'Inventory'
+          ),
+          logout,
+          Object.keys(this.props.fishes).map(this.renderInventory),
+          _react2.default.createElement(_AddFishForm2.default, { addFish: this.props.addFish }),
+          _react2.default.createElement(
+            'button',
+            { onClick: this.props.loadSamples },
+            'Load Sample Fishes'
+          )
         );
-        {
-          logout;
-        }
       }
 
       return _react2.default.createElement(
@@ -25072,12 +25132,13 @@ var Inventory = function (_React$Component) {
           null,
           'Inventory'
         ),
+        logout,
         Object.keys(this.props.fishes).map(this.renderInventory),
         _react2.default.createElement(_AddFishForm2.default, { addFish: this.props.addFish }),
         _react2.default.createElement(
           'button',
           { onClick: this.props.loadSamples },
-          'Load Sample Fishes!'
+          'Load Sample Fishes'
         )
       );
     }
