@@ -46,7 +46,7 @@ class App extends React.Component {
   //Eveytime the component update
   //this will always have nextProps as a parameter
   componentWillUpdate(nextProps, nextState) {
-    localStorage.setItem(`my-store`, JSON.stringify(nextState.order));
+    localStorage.setItem(`order-${this.props.match.params.storeId}`, JSON.stringify(nextState.order));
   }
 
   addToOrder(key) {

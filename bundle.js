@@ -25129,7 +25129,7 @@ var App = function (_React$Component) {
   }, {
     key: "componentWillUpdate",
     value: function componentWillUpdate(nextProps, nextState) {
-      localStorage.setItem("my-store", JSON.stringify(nextState.order));
+      localStorage.setItem("order-" + this.props.match.params.storeId, JSON.stringify(nextState.order));
     }
   }, {
     key: "addToOrder",
