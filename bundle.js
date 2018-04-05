@@ -25970,11 +25970,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Router = function Router() {
   return _react2.default.createElement(
     _reactRouterDom.BrowserRouter,
-    null,
+    { basename: '/catch-of-the-day/' },
     _react2.default.createElement(
       _reactRouterDom.Switch,
       null,
-      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/catch-of-the-day/', component: _StorePicker2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _StorePicker2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/store/:storeId', component: _App2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { component: _NotFound2.default })
     )
