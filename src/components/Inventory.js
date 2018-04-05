@@ -49,9 +49,10 @@ class Inventory extends React.Component {
       console.error(err);
       return;
     }
-
+    //grab the store id 
+    const storeId = localStorage.getItem("store-id");
     // grab the store info
-    const storeRef = base.database().ref(this.props.storeId);
+    const storeRef = base.database().ref(storeId);
 
     // query the firebase once for the store data
     storeRef.once('value', (snapshot) => {
@@ -66,7 +67,7 @@ class Inventory extends React.Component {
 
       this.setState({
         uid: authData.user.uid,
-        // owner: data.owner || authData.user.uid
+         owner: data.owner || authData.user.uid
       });
     });
 

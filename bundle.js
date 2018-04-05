@@ -25102,14 +25102,14 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: "componentWillMount",
     value: function componentWillMount() {
-      //TODO: Revisar el routing y colocar el id que corresponde ({$this.props.params.storeId}/fishes)
-      this.ref = _base2.default.syncState("my-store", {
+      var storeId = localStorage.getItem("store-id2");
+      var localStorageRef = localStorage.getItem("order-" + storeId);
+      this.ref = _base2.default.syncState(storeId + "/fishes", {
         context: this,
-        state: "fishes"
+        state: 'fishes'
       });
 
       //check if there's an order in local storage
-      var localStorageRef = localStorage.getItem("order-mystore");
       var order = this.state.order;
       if (localStorageRef) {
         this.setState({
@@ -25119,14 +25119,19 @@ var App = function (_React$Component) {
         this.setState({ order: order });
       }
     }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      _base2.default.removeBinding(this.ref);
+    }
     //Eveytime the component update
     //this will always have nextProps as a parameter
 
   }, {
     key: "componentWillUpdate",
     value: function componentWillUpdate(nextProps, nextState) {
-      //TODO: Revisar routing y colocar store id
-      localStorage.setItem("order-mystore", JSON.stringify(nextState.order));
+      var storeId = localStorage.getItem("store-id2");
+      localStorage.setItem(storeId, JSON.stringify(nextState.order));
     }
   }, {
     key: "addToOrder",
@@ -25449,9 +25454,10 @@ var Inventory = function (_React$Component) {
         console.error(err);
         return;
       }
-
+      //grab the store id 
+      var storeId = localStorage.getItem("store-id");
       // grab the store info
-      var storeRef = _base2.default.database().ref(this.props.storeId);
+      var storeRef = _base2.default.database().ref(storeId);
 
       // query the firebase once for the store data
       storeRef.once('value', function (snapshot) {
@@ -25465,8 +25471,8 @@ var Inventory = function (_React$Component) {
         }
 
         _this3.setState({
-          uid: authData.user.uid
-          // owner: data.owner || authData.user.uid
+          uid: authData.user.uid,
+          owner: data.owner || authData.user.uid
         });
       });
     }
@@ -25864,6 +25870,8 @@ var StorePicker = function (_React$Component) {
       event.preventDefault();
       // 2. get the text from that input
       var storeId = this.storeInput.value;
+      localStorage.setItem("store-id", storeId);
+      console.log(localStorage.getItem("store-id2"));
       // 3. Change the page to /store/whatever-they-entered
       this.props.history.push('/store/' + storeId);
     }

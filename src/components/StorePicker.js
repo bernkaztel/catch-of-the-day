@@ -11,6 +11,8 @@ class StorePicker extends React.Component {
     event.preventDefault();
     // 2. get the text from that input
     const storeId = this.storeInput.value;
+    localStorage.setItem("store-id", storeId);
+    console.log(localStorage.getItem("store-id2"));
     // 3. Change the page to /store/whatever-they-entered
     this.props.history.push(`/store/${storeId}`);
   };
