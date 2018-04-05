@@ -66,7 +66,7 @@ class Inventory extends React.Component {
 
       this.setState({
         uid: authData.user.uid,
-        owner: data.owner || authData.user.uid
+        // owner: data.owner || authData.user.uid
       });
     });
 
@@ -117,6 +117,7 @@ class Inventory extends React.Component {
           {Object.keys(this.props.fishes).map(this.renderInventory)}
           <AddFishForm addFish={this.props.addFish}/>
           <button onClick={this.props.loadSamples}>Load Sample Fishes</button>
+          <span>No eres el dueño de la tienda</span>
         </div>
       )
     }

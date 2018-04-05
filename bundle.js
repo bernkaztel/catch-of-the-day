@@ -24988,8 +24988,8 @@ var Inventory = function (_React$Component) {
         }
 
         _this3.setState({
-          uid: authData.user.uid,
-          owner: data.owner || authData.user.uid
+          uid: authData.user.uid
+          // owner: data.owner || authData.user.uid
         });
       });
     }
@@ -25104,11 +25104,6 @@ var Inventory = function (_React$Component) {
           'div',
           null,
           _react2.default.createElement(
-            'h1',
-            null,
-            'You\'re not the owner of this store'
-          ),
-          _react2.default.createElement(
             'h2',
             null,
             'Inventory'
@@ -25120,6 +25115,11 @@ var Inventory = function (_React$Component) {
             'button',
             { onClick: this.props.loadSamples },
             'Load Sample Fishes'
+          ),
+          _react2.default.createElement(
+            'span',
+            null,
+            'No eres el due\xF1o de la tienda'
           )
         );
       }
