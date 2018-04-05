@@ -24,14 +24,13 @@ class App extends React.Component {
   }
   //When the component is about to mount this checks the database in firebase
   componentWillMount() {
-    const storeId = localStorage.getItem("store-id2");
-    const localStorageRef = localStorage.getItem(`order-${storeId}`);
-    this.ref = base.syncState(`${storeId}/fishes`, {
+    this.ref = base.syncState(`${this.props.match.params.storeId}/fishes`, {
       context: this,
       state: 'fishes'
     });
 
     //check if there's an order in local storage
+    const localStorageRef = localStorage.getItem(`order-${this.props.match.params.storeId}`);
     const order = this.state.order;
     if (localStorageRef) {
       this.setState({
@@ -47,8 +46,7 @@ class App extends React.Component {
   //Eveytime the component update
   //this will always have nextProps as a parameter
   componentWillUpdate(nextProps, nextState) {
-    const storeId = localStorage.getItem("store-id2");
-    localStorage.setItem(storeId, JSON.stringify(nextState.order));
+    localStorage.setItem(`my-store`, JSON.stringify(nextState.order));
   }
 
   addToOrder(key) {
@@ -123,6 +121,7 @@ class App extends React.Component {
           loadSamples={this.loadSamples}
           fishes={this.state.fishes}
           updateFish={this.updateFish}
+          storeId={this.props.match.params.storeId}
         />
       </div>
     );

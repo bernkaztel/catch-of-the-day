@@ -25102,14 +25102,13 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: "componentWillMount",
     value: function componentWillMount() {
-      var storeId = localStorage.getItem("store-id2");
-      var localStorageRef = localStorage.getItem("order-" + storeId);
-      this.ref = _base2.default.syncState(storeId + "/fishes", {
+      this.ref = _base2.default.syncState(this.props.match.params.storeId + "/fishes", {
         context: this,
         state: 'fishes'
       });
 
       //check if there's an order in local storage
+      var localStorageRef = localStorage.getItem("order-" + this.props.match.params.storeId);
       var order = this.state.order;
       if (localStorageRef) {
         this.setState({
@@ -25130,8 +25129,7 @@ var App = function (_React$Component) {
   }, {
     key: "componentWillUpdate",
     value: function componentWillUpdate(nextProps, nextState) {
-      var storeId = localStorage.getItem("store-id2");
-      localStorage.setItem(storeId, JSON.stringify(nextState.order));
+      localStorage.setItem("my-store", JSON.stringify(nextState.order));
     }
   }, {
     key: "addToOrder",
@@ -25226,7 +25224,8 @@ var App = function (_React$Component) {
           removeFish: this.removeFish,
           loadSamples: this.loadSamples,
           fishes: this.state.fishes,
-          updateFish: this.updateFish
+          updateFish: this.updateFish,
+          storeId: this.props.match.params.storeId
         })
       );
     }
@@ -25454,10 +25453,9 @@ var Inventory = function (_React$Component) {
         console.error(err);
         return;
       }
-      //grab the store id 
-      var storeId = localStorage.getItem("store-id");
+
       // grab the store info
-      var storeRef = _base2.default.database().ref(storeId);
+      var storeRef = _base2.default.database().ref(this.props.storeId);
 
       // query the firebase once for the store data
       storeRef.once('value', function (snapshot) {
@@ -25587,18 +25585,11 @@ var Inventory = function (_React$Component) {
           'div',
           null,
           _react2.default.createElement(
-            'h2',
+            'p',
             null,
-            'Inventory'
+            'Sorry you aren\'t the owner of this store!'
           ),
-          logout,
-          Object.keys(this.props.fishes).map(this.renderInventory),
-          _react2.default.createElement(_AddFishForm2.default, { addFish: this.props.addFish }),
-          _react2.default.createElement(
-            'button',
-            { onClick: this.props.loadSamples },
-            'Load Sample Fishes'
-          )
+          logout
         );
       }
 
@@ -25870,8 +25861,7 @@ var StorePicker = function (_React$Component) {
       event.preventDefault();
       // 2. get the text from that input
       var storeId = this.storeInput.value;
-      localStorage.setItem("store-id", storeId);
-      console.log(localStorage.getItem("store-id2"));
+      console.log('Going to ' + storeId);
       // 3. Change the page to /store/whatever-they-entered
       this.props.history.push('/store/' + storeId);
     }

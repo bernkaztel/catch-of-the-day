@@ -60,7 +60,8 @@ class Inventory extends React.Component {
       // claim it as our own if there is no owner already
       if(!data.owner) {
         storeRef.set({
-          owner: authData.user.uid
+          owner: authData.user.uid,
+          fishes: this.props.fishes
         });
       }
 
