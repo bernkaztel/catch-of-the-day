@@ -25974,7 +25974,7 @@ var Router = function Router() {
     _react2.default.createElement(
       _reactRouterDom.Switch,
       null,
-      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _StorePicker2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/catch-of-the-day/', component: _StorePicker2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { path: '/store/:storeId', component: _App2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { component: _NotFound2.default })
     )
