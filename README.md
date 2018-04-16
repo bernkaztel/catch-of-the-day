@@ -7,4 +7,4 @@ autenticación de Firebase. Proyecto creado mediante el curso "React for Beggine
 ## Vista previa 
 
 ### Vista previa de Menú, Orden e Inventario. 
-![Vista de Home & Houses](./preview.jpg)
+![Vista de Home & Houses](https://raw.githubusercontent.com/bernkaztel/catch-of-the-day/master/preview.jpg)
